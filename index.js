@@ -7,6 +7,7 @@ const ora = require("ora");
 const chalk = require("chalk");
 const read = require("read");
 const path = require("path");
+const fs = require("fs")
 
 //1.从zeploy获取配置
 const rcPath = path.resolve("zeploy.config.js");
@@ -21,23 +22,20 @@ let server = {
   path: serverZeploy.targetPath + "/" + serverZeploy.distPath
 };
 
-// 2.从config服务器配置
-// let server = require('./config')[(process.env.NODE_ENV === 'production' ? 'production' : 'test')];
-
-console.log(chalk.green("Scp2发布模式-->请确认发布信息："));
-console.log(chalk.green("> 环境：" + server.name));
-console.log(chalk.green("> 服务器：" + server.username + "@" + server.host));
-console.log(chalk.green("> 服务器发布路径：" + server.path));
-
-read(
-  {
+function upload(){
+  
+  console.log(chalk.green("Scp2发布模式-->请确认发布信息："));
+  console.log(chalk.green("> 环境：" + server.name));
+  console.log(chalk.green("> 服务器：" + server.username + "@" + server.host));
+  console.log(chalk.green("> 服务器发布路径：" + server.path));
+  read({
     prompt: "确定执行发布操作吗？(yes/no)"
   },
   async (err, text) => {
     const spinner = ora(
       "正在发布到" +
-        (process.env.NODE_ENV === "prod" ? "生产" : "测试") +
-        "服务器..."
+      (process.env.NODE_ENV === "prod" ? "生产" : "测试") +
+      "服务器..."
     );
     // loading
     spinner.start();
@@ -47,14 +45,13 @@ read(
       // 第二个参数：服务器配置
       // 第三个参数：上传回调函数
       scpClient.scp(
-        "./dist/",
-        {
+        "./dist/", {
           host: server.host,
           username: server.username,
           password: server.password,
           path: server.path
         },
-        function(err) {
+        function (err) {
           spinner.stop();
           if (err) {
             console.log(chalk.red("发布失败.\n"));
@@ -63,7 +60,7 @@ read(
             console.log(
               chalk.green(
                 (process.env.NODE_ENV === "production" ? "生产" : "测试") +
-                  "服务器部署完成！\n"
+                "服务器部署完成！\n"
               )
             );
           }
@@ -74,3 +71,27 @@ read(
     }
   }
 );
+}
+
+
+
+upload();
+// fs.exists(server.path, function (exists) {
+//   console.log(exists ? "创建成功" : "创建失败");
+//   // 2.从config服务器配置
+//   // let server = require('./config')[(process.env.NODE_ENV === 'production' ? 'production' : 'test')];
+
+//   if (!exists){
+//     fs.mkdir(server.path, { recursive: true }, (err) => {
+//       // => [Error: EPERM: operation not permitted, mkdir 'C:\']
+//       if (err) throw err;
+//         upload(server);
+//     });
+//   }else{
+//     upload(server);
+//   }
+// });
+
+
+
+module.exports = { upload }

@@ -1,18 +1,17 @@
 {
-  "name": "scp2_deploy",
-  "version": "1.0.0",
+  "name": "mypackage_fu",
+  "version": "1.0.1",
   "description": "scp2 deploy vue project to server",
   "main": "index.js",
   "scripts": {
-    "test": "echo hello world"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/monotonewang/scp2_deploy.git"
   },
   "keywords": [
-    "scp2",
-    "deploy"
+    "scp2"
   ],
   "author": "fuqingwang",
   "license": "ISC",
@@ -23,10 +22,11 @@
   "dependencies": {
     "chalk": "^2.4.1",
     "commander": "^2.18.0",
+    "cross-env": "^7.0.3",
     "ora": "^3.0.0",
+    "path": "^0.12.7",
     "read": "^1.0.7",
-    "ssh2": "^0.6.1",
-    "scp2": "^0.5.0",
-    "cross-env": "^7.0.3"
-  }
+    "scp2": "^0.5.0"
+  },
+  "devDependencies": {}
 }
