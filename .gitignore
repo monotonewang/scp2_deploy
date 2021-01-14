@@ -1,0 +1,4 @@
+node_modules/
+*.log
+zeploy.config.js
+.DS_Store
